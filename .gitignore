@@ -1,0 +1,6 @@
+Products/__pycache__
+Products/migrations/__pycache__
+Users/__pycache__
+Users/migrations/__pycache__
+Store_API/__pycache__
+.env
