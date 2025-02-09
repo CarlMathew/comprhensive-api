@@ -7,7 +7,8 @@ from .serializer import ProductSerializer
 from django.shortcuts import render
 from rest_framework.pagination import PageNumberPagination
 from django.shortcuts import get_object_or_404
-
+from Users import permissions
+from rest_framework.permissions import IsAuthenticated
 # from django.db.models import Q
 # from django.shortcuts import get_list_or_404
 
@@ -28,6 +29,7 @@ class ProductListAPIView(generics.ListAPIView):
     serializer_class = ProductSerializer
     lookup_field = "pk"
     pagination_class = StandardResultsSetPagination
+    permission_classes = [permissions.isUser, IsAuthenticated]
 
 class ProductStockListAPIView(generics.ListAPIView):
     """
@@ -140,8 +142,6 @@ class ProductDestoyAPIView(generics.DestroyAPIView):
             raise ValueError({"error": "Please make sure to provide product id"})
         instance = get_object_or_404(Product, product_id = product_id)
         instance.delete()
-
-
         remaining_products = Product.objects.all()
         serializer = ProductSerializer(remaining_products, many = True)
         return Response(serializer.data, status=status.HTTP_200_OK)
